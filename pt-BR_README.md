@@ -3,8 +3,6 @@ Desktop DNS Manager
 
 ## Versão PT-BR
 
----
-
 # Gerenciador de DNS Interativo para Debian/Ubuntu
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

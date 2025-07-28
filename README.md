@@ -1,8 +1,6 @@
 # dns-manager-desktop
 Desktop DNS Manager
 
----
-
 # Interactive DNS Manager for Debian/Ubuntu
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

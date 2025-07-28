@@ -1,4 +1,7 @@
-# Versão PT-BR
+# dns-manager-desktop
+Desktop DNS Manager
+
+## Versão PT-BR
 
 ---
 

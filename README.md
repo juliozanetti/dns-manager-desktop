@@ -3,125 +3,125 @@ Desktop DNS Manager
 
 ---
 
-# Gerenciador de DNS Interativo para Debian/Ubuntu
+# Interactive DNS Manager for Debian/Ubuntu
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 📝 Descrição
+## 📝 Description
 
-Este é um script Bash interativo projetado para simplificar o gerenciamento e a aplicação de configurações de servidores DNS (IPv4 e IPv6) em sistemas Linux baseados em Debian/Ubuntu (como o Debian 11). Ele utiliza o `NetworkManager` (via `nmcli`) para aplicar as alterações e o `systemd-resolved` (via `resolvectl`) para exibir o status atual do DNS no sistema.
+This is an interactive Bash script designed to simplify the management and application of DNS server configurations (IPv4 and IPv6) on Debian/Ubuntu-based Linux systems (such as Debian 11). It utilizes `NetworkManager` (via `nmcli`) to apply changes and `systemd-resolved` (via `resolvectl`) to display the current DNS status on the system.
 
-O script permite que você mantenha uma lista de servidores DNS favoritos, adicione novos, edite, apague e os aplique facilmente a uma interface de rede específica, garantindo que as alterações sejam efetivadas através da reinicialização da conexão.
+The script allows you to maintain a list of favorite DNS servers, add new ones, edit, delete, and easily apply them to a specific network interface, ensuring that changes are effective by restarting the connection.
 
-## ✨ Funcionalidades
+## ✨ Features
 
-*   **Gerenciamento de Servidores DNS**:
-    *   Exibir uma lista de servidores DNS IPv4 e IPv6 salvos em um arquivo `dns_servers.lst`.
-    *   Adicionar novas entradas de servidores DNS (com nome, IPv4 e IPv6).
-    *   Editar entradas existentes (nome, IPv4, IPv6).
-    *   Apagar entradas.
-*   **Aplicação de DNS a Interfaces de Rede**:
-    *   Selecionar um servidor DNS salvo para aplicar.
-    *   Listar perfis de conexão de rede ativos gerenciados pelo `NetworkManager`.
-    *   Aplicar os servidores DNS selecionados a um perfil de conexão específico usando `nmcli`.
-    *   **Reinicialização da Conexão**: Desliga a interface de rede no início da aplicação para garantir a remoção de DNSs anteriores e a religa no final para efetivar as alterações.
-    *   Verificação pós-aplicação para confirmar os novos DNSs na conexão e via `resolvectl`.
-*   **Listagem de DNS Atuais do Sistema**:
-    *   Exibir os servidores DNS atualmente em uso pelo sistema, detalhados por interface (via `resolvectl status`).
-    *   Mostrar as configurações de DNS por perfil de conexão do `NetworkManager` (via `nmcli`).
-*   **Interface Amigável**:
-    *   Menu interativo e colorido para facilitar a navegação.
-    *   Limpeza de tela automática ao retornar ao menu principal.
-    *   Validação básica de endereços IP.
-    *   Tratamento de erros e dicas de solução de problemas.
+*   **DNS Server Management**:
+    *   Display a list of saved IPv4 and IPv6 DNS servers from a `dns_servers.lst` file.
+    *   Add new DNS server entries (with name, IPv4, and IPv6).
+    *   Edit existing entries (name, IPv4, IPv6).
+    *   Delete entries.
+*   **Applying DNS to Network Interfaces**:
+    *   Select a saved DNS server to apply.
+    *   List active network connection profiles managed by `NetworkManager`.
+    *   Apply the selected DNS servers to a specific connection profile using `nmcli`.
+    *   **Connection Restart**: Disables the network interface at the beginning of the application process to ensure the removal of previous DNS entries and re-enables it at the end to make the changes effective.
+    *   Post-application verification to confirm the new DNS settings on the connection and via `resolvectl`.
+*   **Listing Current System DNS**:
+    *   Display the DNS servers currently in use by the system, detailed by interface (via `resolvectl status`).
+    *   Show DNS configurations per `NetworkManager` connection profile (via `nmcli`).
+*   **User-Friendly Interface**:
+    *   Interactive and colored menu for easy navigation.
+    *   Automatic screen clearing upon returning to the main menu.
+    *   Basic IP address validation.
+    *   Error handling and troubleshooting tips.
 
-## 🚀 Pré-requisitos
+## 🚀 Prerequisites
 
-Este script foi desenvolvido e testado no **Debian 11**. Ele requer os seguintes pacotes e ferramentas:
+This script has been developed and tested on **Debian 11**. It requires the following packages and tools:
 
-*   **`sudo`**: Para executar comandos com privilégios de superusuário.
-*   **`network-manager`**: Pacote principal do NetworkManager.
-*   **`nmcli`**: Ferramenta de linha de comando do NetworkManager (geralmente incluída com `network-manager`).
-*   **`systemd-resolved`**: O resolvedor de DNS padrão do systemd (geralmente incluído).
-*   **`resolvectl`**: Ferramenta de linha de comando para interagir com `systemd-resolved` (geralmente incluída com `systemd-resolved`).
-*   **Ferramentas Bash padrão**: `grep`, `awk`, `sed`, `cut`, `sort`, `uniq`, `wc`, `head`, `tail`, `touch`, `systemctl`, `clear` (ou `printf`).
+*   **`sudo`**: To execute commands with superuser privileges.
+*   **`network-manager`**: Main NetworkManager package.
+*   **`nmcli`**: NetworkManager Command Line Interface tool (usually included with `network-manager`).
+*   **`systemd-resolved`**: The default systemd DNS resolver (usually included).
+*   **`resolvectl`**: Command-line tool to interact with `systemd-resolved` (usually included with `systemd-resolved`).
+*   **Standard Bash tools**: `grep`, `awk`, `sed`, `cut`, `sort`, `uniq`, `wc`, `head`, `tail`, `touch`, `systemctl`, `clear` (or `printf`).
 
-Você pode instalar os pacotes essenciais no Debian/Ubuntu com:
+You can install the essential packages on Debian/Ubuntu with:
 
 ```bash
 sudo apt update
 sudo apt install network-manager systemd-resolved
 ```
-(`network-manager-gnome` e `network-manager-config-connectivity-debian` são componentes do GNOME/desktop que geralmente instalam o `network-manager` como dependência, mas para a funcionalidade do script, o `network-manager` base é o mais importante.)
+(`network-manager-gnome` and `network-manager-config-connectivity-debian` are GNOME/desktop components that typically install `network-manager` as a dependency, but for the script's functionality, the base `network-manager` is most important.)
 
-## 📦 Como Usar
+## 📦 How to Use
 
-1.  **Clone o Repositório (ou Salve o Script):**
+1.  **Clone the Repository (or Save the Script):**
     ```bash
-    git clone https://github.com/seu-usuario/seu-repositorio.git
-    cd seu-repositorio # Ou para o diretório onde você salvou o script
+    git clone https://github.com/your-username/your-repository.git
+    cd your-repository # Or to the directory where you saved the script
     ```
-    Ou, copie o conteúdo do script e salve-o em um arquivo, por exemplo, `gerenciar_dns.sh`.
+    Alternatively, copy the script content and save it to a file, e.g., `manage_dns.sh`.
 
-2.  **Dê Permissões de Execução:**
+2.  **Grant Execute Permissions:**
     ```bash
-    chmod +x gerenciar_dns.sh
+    chmod +x manage_dns.sh
     ```
 
-3.  **Execute o Script:**
+3.  **Run the Script:**
     ```bash
-    ./gerenciar_dns.sh
+    ./manage_dns.sh
     ```
 
-    O script iniciará o menu interativo:
+    The script will start the interactive menu:
 
     ```
-    ========== Menu de Gerenciamento de DNS ==========
-    1. Exibir Servidores DNS Registrados
-    2. Adicionar Novo Servidor DNS
-    3. Editar Servidor DNS Existente
-    4. Apagar Servidor DNS
-    5. Aplicar Servidor DNS (Mudar no Sistema via NetworkManager)
-    6. Listar Servidores DNS Atuais do Sistema
-    7. Sair
+    ========== DNS Management Menu ==========
+    1. Display Registered DNS Servers
+    2. Add New DNS Server
+    3. Edit Existing DNS Server
+    4. Delete DNS Server
+    5. Apply DNS Server (Change on System via NetworkManager)
+    6. List Current System DNS Servers
+    7. Exit
     ==================================================
-    Escolha uma opção:
+    Choose an option:
     ```
 
-    Siga as instruções na tela para gerenciar seus servidores DNS. Para as opções que modificam o sistema (como a opção 5), você será solicitado a fornecer sua senha de `sudo`.
+    Follow the on-screen instructions to manage your DNS servers. For options that modify the system (like option 5), you will be prompted to provide your `sudo` password.
 
-## 📂 Estrutura de Arquivos
+## 📂 File Structure
 
-*   `gerenciar_dns.sh`: O script principal em Bash.
-*   `dns_servers.lst`: Um arquivo de texto que armazena os servidores DNS que você adiciona. Ele é criado automaticamente se não existir. Cada linha no arquivo representa um servidor DNS, com campos separados por ponto e vírgula (`;`): `Nome;IPv4_Endereços;IPv6_Endereços`.
+*   `manage_dns.sh`: The main Bash script.
+*   `dns_servers.lst`: A text file that stores the DNS servers you add. It is created automatically if it doesn't exist. Each line in the file represents a DNS server, with fields separated by semicolons (`;`): `Name;IPv4_Addresses;IPv6_Addresses`.
 
-    Exemplo de `dns_servers.lst`:
+    Example `dns_servers.lst`:
     ```
     Google DNS;8.8.8.8,8.8.4.4;2001:4860::8888,2001:4860::8844
     Cloudflare DNS;1.1.1.1,1.0.0.1;2606:4700::1111,2606:4700::1001
-    Meu DNS Local;;fd00::1
+    My Local DNS;;fd00::1
     ```
 
-## ⚠️ Solução de Problemas
+## ⚠️ Troubleshooting
 
-*   **`Erro: 'sudo' não encontrado.`**: Certifique-se de que o pacote `sudo` está instalado (`sudo apt install sudo`) e que seu usuário está configurado para usá-lo.
-*   **`Erro: 'nmcli' não encontrado.`**: Instale o pacote `network-manager`: `sudo apt update && sudo apt install network-manager`.
-*   **`Erro: 'resolvectl' não encontrado.`**: Instale o pacote `systemd-resolved`: `sudo apt update && sudo apt install systemd-resolved`.
-*   **`Aviso: O serviço 'NetworkManager' não está ativo.`**: Ative e habilite o serviço: `sudo systemctl enable --now NetworkManager`.
-*   **`Falha ao aplicar o DNS!` ou problemas de conectividade após aplicar**:
-    *   Verifique a saída de erro do script para mensagens detalhadas.
-    *   Confirme se o perfil de conexão selecionado está correto e ativo (`nmcli con show --active`).
-    *   Verifique o status do serviço NetworkManager: `systemctl status NetworkManager`.
-    *   Pode haver outro gerenciador de rede (como `ifupdown` ou `dhcpcd`) interferindo. No Debian 11, `NetworkManager` é o padrão para a maioria das instalações de desktop.
-    *   Sua sessão SSH pode ser interrompida ao reiniciar a interface. Se isso acontecer, você pode precisar acessar o console físico ou uma nova sessão SSH após a interface se recuperar.
-*   **Validação de IP IPv6**: A validação de IPv6 no script é básica e não cobre todas as formas de notação IPv6. Se você tiver problemas com um IPv6 que parece válido mas é rejeitado, tente uma forma mais canônica (completa) do endereço.
+*   **`Error: 'sudo' not found.`**: Ensure the `sudo` package is installed (`sudo apt install sudo`) and your user is configured to use it.
+*   **`Error: 'nmcli' not found.`**: Install the `network-manager` package: `sudo apt update && sudo apt install network-manager`.
+*   **`Error: 'resolvectl' not found.`**: Install the `systemd-resolved` package: `sudo apt update && sudo apt install systemd-resolved`.
+*   **`Warning: 'NetworkManager' service is not active.`**: Activate and enable the service: `sudo systemctl enable --now NetworkManager`.
+*   **`Failed to apply DNS!` or connectivity issues after applying**:
+    *   Check the script's error output for detailed messages.
+    *   Confirm that the selected connection profile is correct and active (`nmcli con show --active`).
+    *   Check the status of the NetworkManager service: `systemctl status NetworkManager`.
+    *   There might be another network manager (like `ifupdown` or `dhcpcd`) interfering. On Debian 11, `NetworkManager` is the default for most desktop installations.
+    *   Your SSH session might be interrupted when restarting the interface. If this happens, you may need to access the physical console or a new SSH session after the interface recovers.
+*   **IPv6 IP Validation**: The IPv6 validation in the script is basic and does not cover all valid IPv6 notation forms. If you experience issues with an IPv6 that appears valid but is rejected, try a more canonical (full) form of the address.
 
-## 🤝 Contribuições
+## 🤝 Contributions
 
-Contribuições são bem-vindas! Se você tiver sugestões, melhorias ou encontrar bugs, por favor, abra uma issue ou envie um pull request.
+Contributions are welcome! If you have suggestions, improvements, or find bugs, please open an issue or submit a pull request.
 
-## 📄 Licença
+## 📄 License
 
-Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
 ---
